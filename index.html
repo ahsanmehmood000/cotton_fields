@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/International_Boundary_0.js"></script>
+        <script src="data/Provincial_boundary_1.js"></script>
+        <script src="data/all_districtscopy_2.js"></script>
+        <script src="data/Joinedlayer_3.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[24.174395380158895,65.06781432662238],[34.091287602074075,81.28757099278685]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        function pop_International_Boundary_0(feature, layer) {
+            var popupContent = '<table>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_International_Boundary_0_0() {
+            return {
+                pane: 'pane_International_Boundary_0',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_International_Boundary_0');
+        map.getPane('pane_International_Boundary_0').style.zIndex = 400;
+        map.getPane('pane_International_Boundary_0').style['mix-blend-mode'] = 'normal';
+        var layer_International_Boundary_0 = new L.geoJson(json_International_Boundary_0, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_International_Boundary_0',
+            layerName: 'layer_International_Boundary_0',
+            pane: 'pane_International_Boundary_0',
+            onEachFeature: pop_International_Boundary_0,
+            style: style_International_Boundary_0_0,
+        });
+        bounds_group.addLayer(layer_International_Boundary_0);
+        map.addLayer(layer_International_Boundary_0);
+        function pop_Provincial_boundary_1(feature, layer) {
+            var popupContent = '<table>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Provincial_boundary_1_0() {
+            return {
+                pane: 'pane_Provincial_boundary_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(161,161,161,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Provincial_boundary_1');
+        map.getPane('pane_Provincial_boundary_1').style.zIndex = 401;
+        map.getPane('pane_Provincial_boundary_1').style['mix-blend-mode'] = 'normal';
+        var layer_Provincial_boundary_1 = new L.geoJson(json_Provincial_boundary_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Provincial_boundary_1',
+            layerName: 'layer_Provincial_boundary_1',
+            pane: 'pane_Provincial_boundary_1',
+            onEachFeature: pop_Provincial_boundary_1,
+            style: style_Provincial_boundary_1_0,
+        });
+        bounds_group.addLayer(layer_Provincial_boundary_1);
+        map.addLayer(layer_Provincial_boundary_1);
+        function pop_all_districtscopy_2(feature, layer) {
+            var popupContent = '<table>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_all_districtscopy_2_0(feature) {
+            switch(String(feature.properties['NAME_3'])) {
+                case 'Bahawalnagar':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,25,28,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Bahawalpur':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,52,41,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Dera Ghazi Kha':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,79,53,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Hyderabad':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,106,66,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Khairpur':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,133,78,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Khanewal':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(250,160,91,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Layyah':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,181,106,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Lodhran':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,196,123,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Matiari':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,211,140,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Mianwali':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,226,157,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Mirphurkhas':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,240,174,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Multan':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,191,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Muzaffargarh':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,249,186,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Naushahro Firoz':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,243,181,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Nawab Shah':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,236,176,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Rahimyar Khan':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(194,230,171,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Rajan Pur':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(179,224,166,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Sanghar':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(159,213,166,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Shikarpur':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(136,196,170,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Sukkur':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(113,180,174,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Tando M. Khan':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,164,178,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Vehari':
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(66,147,182,1.0)',
+                interactive: false,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_all_districtscopy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(43,131,186,1.0)',
+                interactive: false,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_all_districtscopy_2');
+        map.getPane('pane_all_districtscopy_2').style.zIndex = 402;
+        map.getPane('pane_all_districtscopy_2').style['mix-blend-mode'] = 'normal';
+        var layer_all_districtscopy_2 = new L.geoJson(json_all_districtscopy_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_all_districtscopy_2',
+            layerName: 'layer_all_districtscopy_2',
+            pane: 'pane_all_districtscopy_2',
+            onEachFeature: pop_all_districtscopy_2,
+            style: style_all_districtscopy_2_0,
+        });
+        bounds_group.addLayer(layer_all_districtscopy_2);
+        map.addLayer(layer_all_districtscopy_2);
+        function pop_Joinedlayer_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Latitude</th>\
+                        <td class="visible-with-data" id="Latitude">' + (feature.properties['Latitude'] !== null ? autolinker.link(String(feature.properties['Latitude']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Longitude</th>\
+                        <td class="visible-with-data" id="Longitude">' + (feature.properties['Longitude'] !== null ? autolinker.link(String(feature.properties['Longitude']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">pH</th>\
+                        <td class="visible-with-data" id="pH">' + (feature.properties['pH'] !== null ? autolinker.link(String(feature.properties['pH']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">EC  dS/m</th>\
+                        <td class="visible-with-data" id="EC  dS/m">' + (feature.properties['EC  dS/m'] !== null ? autolinker.link(String(feature.properties['EC  dS/m']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">OM (%)</th>\
+                        <td class="visible-with-data" id="OM (%)">' + (feature.properties['OM (%)'] !== null ? autolinker.link(String(feature.properties['OM (%)']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">K (mg/kg)</th>\
+                        <td class="visible-with-data" id="K (mg/kg)">' + (feature.properties['K (mg/kg)'] !== null ? autolinker.link(String(feature.properties['K (mg/kg)']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Available P (mg/kg)</th>\
+                        <td class="visible-with-data" id="Available P (mg/kg)">' + (feature.properties['Available P (mg/kg)'] !== null ? autolinker.link(String(feature.properties['Available P (mg/kg)']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">N (mg/kg)</th>\
+                        <td class="visible-with-data" id="N (mg/kg)">' + (feature.properties['N (mg/kg)'] !== null ? autolinker.link(String(feature.properties['N (mg/kg)']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NAME_3</th>\
+                        <td class="visible-with-data" id="NAME_3">' + (feature.properties['NAME_3'] !== null ? autolinker.link(String(feature.properties['NAME_3']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TYPE_3</th>\
+                        <td class="visible-with-data" id="TYPE_3">' + (feature.properties['TYPE_3'] !== null ? autolinker.link(String(feature.properties['TYPE_3']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Joinedlayer_3_0() {
+            return {
+                pane: 'pane_Joinedlayer_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(51,160,44,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Joinedlayer_3');
+        map.getPane('pane_Joinedlayer_3').style.zIndex = 403;
+        map.getPane('pane_Joinedlayer_3').style['mix-blend-mode'] = 'normal';
+        var layer_Joinedlayer_3 = new L.geoJson(json_Joinedlayer_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Joinedlayer_3',
+            layerName: 'layer_Joinedlayer_3',
+            pane: 'pane_Joinedlayer_3',
+            onEachFeature: pop_Joinedlayer_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Joinedlayer_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Joinedlayer_3);
+        map.addLayer(layer_Joinedlayer_3);
+        setBounds();
+        var i = 0;
+        layer_Provincial_boundary_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['province'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['province']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Provincial_boundary_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_all_districtscopy_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['NAME_3'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['NAME_3']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_all_districtscopy_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_International_Boundary_0,layer_Provincial_boundary_1,layer_all_districtscopy_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_International_Boundary_0,layer_Provincial_boundary_1,layer_all_districtscopy_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_International_Boundary_0,layer_Provincial_boundary_1,layer_all_districtscopy_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_International_Boundary_0,layer_Provincial_boundary_1,layer_all_districtscopy_2]);
+        });
+        </script>
+    </body>
+</html>
